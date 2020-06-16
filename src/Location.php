@@ -1,27 +1,46 @@
 <?php 
-namespace Armincms\Location;
 
+namespace Armincms\Location; 
 
-use Armincms\Localization\Concerns\HasTranslation;
-use Armincms\Localization\Contracts\Translatable; 
+use Armincms\Targomaan\Concerns\InteractsWithTargomaan; 
+use Armincms\Targomaan\Contracts\Translatable; 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Nova;
 
 class Location extends Model implements Translatable
 {
-	use HasTranslation ;
+	use InteractsWithTargomaan;
 
-	public $timestamps 	= false; 
-	protected $guarded 	= [];
-    protected $with  = [
-        "translations"
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = []; 
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'config' => 'json'
     ];
-	protected $casts	= [
-		'config' => 'json'
-	]; 
 
-    public static function boot()
-    {
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {  
         parent::boot();
 
         static::saving(function($model) {   
@@ -29,9 +48,23 @@ class Location extends Model implements Translatable
         });
     }
  
-
+    /**
+     * The related location relationship.
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function location()
     {
-        return $this->belongsTo($this);
+        return $this->belongsTo(static::class);
     } 
+
+    /**
+     * Driver name of the targomaan.
+     * 
+     * @return string
+     */
+    public function translator(): string
+    {
+        return 'json';
+    }
 }
