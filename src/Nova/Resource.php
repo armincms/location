@@ -12,7 +12,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Select; 
-
+use Armincms\Fields\Targomaan; 
 use Armincms\Nova\Resource as ArminResource;   
 
 
@@ -23,7 +23,7 @@ abstract class Resource extends ArminResource
      *
      * @var string
      */
-    public static $model = 'Armincms\Location\Location';
+    public static $model = 'Armincms\\Location\\Location';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,17 +38,8 @@ abstract class Resource extends ArminResource
      * @var array
      */
     public static $search = [
-        'id'
-    ];
-
-    /**
-     * The columns that should be searched in the translation table.
-     *
-     * @var array
-     */
-    public static $searchTranslations = [
-        'name'
-    ];
+        'id', 'name'
+    ]; 
 
     /**
      * The logical group associated with the resource.
@@ -68,11 +59,11 @@ abstract class Resource extends ArminResource
         return collect([
             ID::make(__("ID"), 'id')->sortable(),
 
-            $this->translatable([
+            optional(static::belongsTo())->sortable(),
+
+            Targomaan::make([
                 Text::make(__("Name"), 'name')->sortable(),
             ]), 
-
-            optional(static::belongsTo())->sortable(),
 
             Boolean::make(__('Active'), 'active') 
                 ->sortable(),
