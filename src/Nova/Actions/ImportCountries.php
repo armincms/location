@@ -10,8 +10,9 @@ use Laravel\Nova\Fields\Boolean;
 use Armincms\Location\Nova\Country;
 use Armincms\Location\Location;
 use Laravel\Nova\Nova;
+use Brightspot\Nova\Tools\DetachedActions\DetachedAction;
 
-class ImportCountries extends Action
+class ImportCountries extends DetachedAction
 {  
     /**
      * Perform the action on the given models.
@@ -32,20 +33,12 @@ class ImportCountries extends Action
 
         Location::insert($insertions->map(function($insertion) use ($fields) {
             return [
-                "iso" => $insertion['iso'],
-                "resource" => Country::class,
-                "active" => $insertion['iso'] == "IR" || boolval($fields->active),
+                'name'  => json_encode([app()->getLocale() => $insertion['name']]),
+                "iso"   => $insertion['iso'],
+                "resource"  => Country::class,
+                "active"    => $insertion['iso'] == "IR" || boolval($fields->active),
             ];
-        })->all()); 
-
-        $keys = Location::whereResource(Country::class)->get()->pluck("id", "iso");
-
-        (new Location)->translations()->insert($insertions->map(function($insertion) use ($keys) {
-            return [
-                "name" => $insertion['name'],
-                "location_id" => $keys->get($insertion['iso']),
-            ];
-        })->all());
+        })->all());  
 
         option()->put("_countries_imported_", 1);
 

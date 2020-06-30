@@ -13,11 +13,14 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Select; 
 use Armincms\Fields\Targomaan; 
+use Armincms\Fields\InteractsWithJsonTranslator; 
 use Armincms\Nova\Resource as ArminResource;   
 
 
 abstract class Resource extends ArminResource
 { 
+    use InteractsWithJsonTranslator;
+    
     /**
      * The model the resource corresponds to.
      *
@@ -42,6 +45,15 @@ abstract class Resource extends ArminResource
     ]; 
 
     /**
+     * The columns that should be searched as JSON.
+     *
+     * @var array
+     */
+    public static $searchJson = [
+        'name'
+    ]; 
+
+    /**
      * The logical group associated with the resource.
      *
      * @var string
@@ -61,12 +73,16 @@ abstract class Resource extends ArminResource
 
             optional(static::belongsTo())->sortable(),
 
-            Targomaan::make([
-                Text::make(__("Name"), 'name')->sortable(),
+            new Targomaan([
+                Text::make(__("Name"), 'name') 
+                    ->rules('required')
+                    ->sortable()
+                    ->required(), 
             ]), 
 
-            Boolean::make(__('Active'), 'active') 
-                ->sortable(),
+            Text::make("ISO")->sortable(),
+
+            Boolean::make(__('Active'), 'active')->sortable(),
              
         ])->filter()->all(); 
     } 

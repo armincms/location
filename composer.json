@@ -9,7 +9,8 @@
     "require": {
         "php": ">=7.1.0",
         "armincms/targomaan": "~0.1",
-        "armincms/nova-targomaan": "~0.1"
+        "armincms/nova-targomaan": "~0.1",
+        "gobrightspot/nova-detached-actions": "~1.0"
     },
     "autoload": {
         "psr-4": {

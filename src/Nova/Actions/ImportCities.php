@@ -28,6 +28,6 @@ class ImportCities extends Import
 
     public function loadCountry(Model $model) : Model
     {
-    	return data_get($model->load('location.location'), 'location.location');
+    	return $model->load('location')->location;
     }
 }

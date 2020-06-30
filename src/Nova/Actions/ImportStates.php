@@ -27,6 +27,6 @@ class ImportStates extends Import
 
     public function loadCountry(Model $model) : Model
     {
-    	return $model->load('Location')->location;
+    	return $model;
     }
 }

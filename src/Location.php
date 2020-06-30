@@ -2,14 +2,15 @@
 
 namespace Armincms\Location; 
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Armincms\Targomaan\Concerns\InteractsWithTargomaan; 
 use Armincms\Targomaan\Contracts\Translatable; 
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Nova;
 
 class Location extends Model implements Translatable
 {
-	use InteractsWithTargomaan;
+	use InteractsWithTargomaan, SoftDeletes;
 
     /**
      * Indicates if the model should be timestamped.

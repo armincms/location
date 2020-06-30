@@ -33,27 +33,15 @@ abstract class Import extends Action
         	return $locations->contains($insertion['name']);
         });
 
-        Location::insert($insertions->map(function($insertion) use ($model, $fields) {
-            unset($insertion['name']);
+        Location::insert($insertions->map(function($insertion) use ($model, $fields) { 
             unset($insertion['alias']);
             $insertion['active'] = boolval($fields->active); 
             $insertion['location_id'] = $model->id;
             $insertion['resource'] = $this->resource();
+            $insertion['name'] = collect([app()->getLocale() => $insertion['name']]);
 
             return $insertion;
-        })->all());
-
-        $keys = Location::where([
-            'location_id' => $model->id,
-            "resource" => $this->resource(),
-        ])->get()->pluck("id", "config.location_id");
-
-        (new Location)->translations()->insert($insertions->map(function($insertion) use ($keys) { 
-            return [
-                'name' => $insertion['name'],
-                "location_id" => $keys->get($insertion['location_id']),
-            ];
-        })->all());
+        })->all()); 
     }
 
     /**
