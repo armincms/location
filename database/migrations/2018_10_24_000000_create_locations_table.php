@@ -19,7 +19,7 @@ class CreateLocationsTable extends Migration
     { 
         Schema::create('locations', function (Blueprint $table) {
             $table->bigIncrements('id');  
-            $table->json('name')->default('[]');
+            $table->json('name')->nullable();
             $table->string('locale')->default(app()->getLocale());
             $table->string('iso')->nullable(); 
             $table->boolean('active')->default(false);  
