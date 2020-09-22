@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Armincms\Targomaan\Concerns\InteractsWithTargomaan; 
 use Armincms\Targomaan\Contracts\Translatable; 
-use Laravel\Nova\Nova;
+use Laravel\Nova\Nova as LaravelNova;
 
 class Location extends Model implements Translatable
 {
@@ -45,7 +45,7 @@ class Location extends Model implements Translatable
         parent::boot();
 
         static::saving(function($model) {   
-            $model->resource = Nova::resourceForKey(request()->route('resource')); 
+            $model->resource = LaravelNova::resourceForKey(request()->route('resource')); 
         });
     }
  
@@ -67,5 +67,61 @@ class Location extends Model implements Translatable
     public function translator(): string
     {
         return 'json';
+    } 
+
+    /**
+     * Filter the `zone` resources. 
+     * 
+     * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
+     * @return \Illuminate\Database\Eloquent\Query\Builder $query           
+     */
+    public function scopeZone()
+    {
+        return $this->resource(Nova\Zone::class);
+    } 
+
+    /**
+     * Filter the `city` resources. 
+     * 
+     * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
+     * @return \Illuminate\Database\Eloquent\Query\Builder $query           
+     */
+    public function scopeCity()
+    {
+        return $this->resource(Nova\City::class);
+    } 
+
+    /**
+     * Filter the `country` resources. 
+     * 
+     * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
+     * @return \Illuminate\Database\Eloquent\Query\Builder $query           
+     */
+    public function scopeState()
+    {
+        return $this->resource(Nova\State::class);
+    } 
+
+    /**
+     * Filter the `country` resources. 
+     * 
+     * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
+     * @return \Illuminate\Database\Eloquent\Query\Builder $query           
+     */
+    public function scopeCountry()
+    {
+        return $this->resource(Nova\Country::class);
+    }
+
+    /**
+     * Filter query by the given resource. 
+     * 
+     * @param  \Illuminate\Database\Eloquent\Query\Builder $query    
+     * @param  string $location 
+     * @return \Illuminate\Database\Eloquent\Query\Builder $query           
+     */
+    public function scopeResource($query, $resource)
+    {
+        return $query->whereIn('resource', (array) $resource);
     }
 }
