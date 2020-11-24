@@ -122,6 +122,6 @@ class Location extends Model implements Translatable
      */
     public function scopeResource($query, $resource)
     {
-        return $query->whereIn('resource', (array) $resource);
+        return $query->whereIn($query->qualifyColumn('resource'), (array) $resource);
     }
 }
