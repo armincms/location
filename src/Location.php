@@ -58,6 +58,46 @@ class Location extends Model implements Translatable
     {
         return $this->belongsTo(static::class);
     } 
+ 
+    /**
+     * The related locations relationship.
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function locations()
+    {
+        return $this->hasMany(static::class, 'location_id');
+    } 
+ 
+    /**
+     * The related locations relationship.
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function zones()
+    {
+        return $this->locations();
+    } 
+ 
+    /**
+     * The related locations relationship.
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function cities()
+    {
+        return $this->locations();
+    } 
+ 
+    /**
+     * The related locations relationship.
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function states()
+    {
+        return $this->locations();
+    } 
 
     /**
      * Driver name of the targomaan.
@@ -75,9 +115,9 @@ class Location extends Model implements Translatable
      * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
      * @return \Illuminate\Database\Eloquent\Query\Builder $query           
      */
-    public function scopeZone()
+    public function scopeZone($query)
     {
-        return $this->resource(Nova\Zone::class);
+        return $query->resource(Nova\Zone::class);
     } 
 
     /**
@@ -86,9 +126,9 @@ class Location extends Model implements Translatable
      * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
      * @return \Illuminate\Database\Eloquent\Query\Builder $query           
      */
-    public function scopeCity()
+    public function scopeCity($query)
     {
-        return $this->resource(Nova\City::class);
+        return $query->resource(Nova\City::class);
     } 
 
     /**
@@ -97,9 +137,9 @@ class Location extends Model implements Translatable
      * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
      * @return \Illuminate\Database\Eloquent\Query\Builder $query           
      */
-    public function scopeState()
+    public function scopeState($query)
     {
-        return $this->resource(Nova\State::class);
+        return $query->resource(Nova\State::class);
     } 
 
     /**
@@ -108,9 +148,9 @@ class Location extends Model implements Translatable
      * @param  \Illuminate\Database\Eloquent\Query\Builder $query     
      * @return \Illuminate\Database\Eloquent\Query\Builder $query           
      */
-    public function scopeCountry()
+    public function scopeCountry($query)
     {
-        return $this->resource(Nova\Country::class);
+        return $query->resource(Nova\Country::class);
     }
 
     /**
