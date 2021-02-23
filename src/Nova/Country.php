@@ -3,9 +3,42 @@
 namespace Armincms\Location\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\{ID, Text, Boolean};
+use Armincms\Fields\Targomaan;
 
 class Country extends Resource
-{   
+{    
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \Armincms\Location\Models\LocationCountry::class;
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return [
+            ID::make(__("ID"), 'id')->sortable(), 
+
+            new Targomaan([
+                Text::make(__("Name"), 'name') 
+                    ->rules('required')
+                    ->sortable()
+                    ->required(), 
+            ]), 
+
+            Text::make("ISO")->sortable(),
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+        ]; 
+    } 
+
     /**
      * Get the realted resource field.
      *
@@ -24,14 +57,7 @@ class Country extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-        	(new Actions\ImportCountries)->canSee(function() {
-        		return ! option("_countries_imported_", 0) && \Auth::guard('admin')->check();
-        	}),
-
-            (new Actions\ImportStates)->canSee(function() {
-                return \Auth::guard('admin')->check();
-            })->onlyOnTableRow(),
+        return [ 
         ];
     }
 }

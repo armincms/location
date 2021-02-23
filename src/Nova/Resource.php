@@ -20,13 +20,6 @@ use Armincms\Nova\Resource as ArminResource;
 abstract class Resource extends ArminResource
 { 
     use InteractsWithJsonTranslator;
-    
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = 'Armincms\\Location\\Location';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -93,17 +86,5 @@ abstract class Resource extends ArminResource
      * @param  \Illuminate\Http\Request  $request
      * @return \Laravel\Nova\Fields\Field
      */
-    abstract public function belongsTo();
- 
-    /**
-     * Build an "index" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->where($query->qualifyColumn('resource'), static::class);
-    } 
+    abstract public function belongsTo(); 
 }
