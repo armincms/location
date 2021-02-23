@@ -51,32 +51,5 @@ abstract class Resource extends ArminResource
      *
      * @var string
      */
-    public static $group = 'Locations';  
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function fields(Request $request)
-    {
-        return collect([
-            ID::make(__("ID"), 'id')->sortable(),
-
-            optional(static::belongsTo())->sortable(),
-
-            new Targomaan([
-                Text::make(__("Name"), 'name') 
-                    ->rules('required')
-                    ->sortable()
-                    ->required(), 
-            ]), 
-
-            Text::make("ISO")->sortable(),
-
-            Boolean::make(__('Active'), 'active')->sortable(),
-             
-        ])->filter()->all(); 
-    }  
+    public static $group = 'Locations';    
 }

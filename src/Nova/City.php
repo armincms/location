@@ -2,20 +2,36 @@
 
 namespace Armincms\Location\Nova;
 
-use Laravel\Nova\Fields\BelongsTo; 
-    
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\{Field, BelongsTo};     
 
-class City extends Resource
-{   
+class City extends State
+{     
     /**
-     * Get the realted resource field.
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \Armincms\Location\Models\LocationCity::class;
+
+    /**
+     * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Nova\Fields\Field
+     * @return array
      */
-    public function belongsTo()
-    { 
-        return BelongsTo::make(__("State"), "location", State::class)  
-            ->rules('required');
+    public function fields(Request $request)
+    {
+        return array_map(function($field) {
+            if(! is_subclass_of($field, Field::class) || $field->attribute !== 'country') {
+                return $field;
+            }
+
+            return BelongsTo::make(__('State'), 'state', State::class) 
+                        ->showCreateRelationButton() 
+                        ->withoutTrashed()
+                        ->required()
+                        ->rules('required');
+        }, parent::fields($request));
     }
 }
