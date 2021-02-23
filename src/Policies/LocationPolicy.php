@@ -8,19 +8,8 @@ use Armincms\Location\Location;
 
 class LocationPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization; 
     
-    /**
-     * Determine whether the user can view any locations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        return true;
-    }
-
     /**
      * Determine whether the user can view the location.
      *
