@@ -19,6 +19,7 @@ class ToolServiceProvider extends AuthServiceProvider
      */
     protected $policies = [ 
         Country::class =>  Policies\Country::class, 
+        State::class =>  Policies\State::class, 
     ];
 
     /**
@@ -56,7 +57,7 @@ class ToolServiceProvider extends AuthServiceProvider
     {
         LaravelNova::resources([
             Nova\Country::class,
-            // Nova\State::class, 
+            Nova\State::class, 
             // Nova\City::class,
             // Nova\Zone::class,
         ]);

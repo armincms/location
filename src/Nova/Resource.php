@@ -78,13 +78,5 @@ abstract class Resource extends ArminResource
             Boolean::make(__('Active'), 'active')->sortable(),
              
         ])->filter()->all(); 
-    } 
-
-    /**
-     * Get the realted resource field.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Nova\Fields\Field
-     */
-    abstract public function belongsTo(); 
+    }  
 }
