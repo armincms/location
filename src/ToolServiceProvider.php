@@ -35,24 +35,7 @@ class ToolServiceProvider extends AuthServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        LaravelNova::serving([$this, 'servingNova']);
-  
-        // $citites = collect(require __DIR__.'/../database/city.php');
-
-        // $counties = collect(require __DIR__.'/../database/county.php')->map(function($county, $index) use ($citites) {
-        //     $county['citites'] = $citites->where('county_id', $index + 1);
-        //     return $county; 
-        // });
-
-        // $ir = collect(require __DIR__.'/../database/province.php')->map(function($province) use ($counties) {
-        //     $province['citites'] = $counties->where('province_id', $province['province_id'])->pluck('citites')->flatten(1); 
-        //     return $province;
-        // });
-
-        // \File::put(__DIR__.'/ir.json', $ir->toJson(JSON_PRETTY_PRINT));
-
-        // dd(1);
-
+        LaravelNova::serving([$this, 'servingNova']); 
     } 
 
     public function servingNova(ServingNova $event)
