@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Armincms\\Location\\ToolServiceProvider"
+                "Armincms\\Location\\ServiceProvider"
             ]
         }
     },
