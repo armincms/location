@@ -21,6 +21,7 @@ class ToolServiceProvider extends AuthServiceProvider
         Country::class =>  Policies\Country::class, 
         State::class =>  Policies\State::class, 
         City::class =>  Policies\City::class, 
+        Zone::class =>  Policies\Zone::class, 
     ];
 
     /**
@@ -60,7 +61,7 @@ class ToolServiceProvider extends AuthServiceProvider
             Nova\Country::class,
             Nova\State::class, 
             Nova\City::class,
-            // Nova\Zone::class,
+            Nova\Zone::class,
         ]);
     }
 

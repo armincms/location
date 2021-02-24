@@ -2,20 +2,51 @@
 
 namespace Armincms\Location\Nova;
 
-use Laravel\Nova\Fields\BelongsTo; 
-    
+use Illuminate\Http\Request; 
+use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo};
+use GeneaLabs\NovaMapMarkerField\MapMarker;
+use Armincms\Fields\Targomaan;
 
-class Zone extends Resource
-{   
+class Zone extends Country
+{     
     /**
-     * Get the realted resource field.
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \Armincms\Location\Models\LocationZone::class;
+
+    /**
+     * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Nova\Fields\Field
+     * @return array
      */
-    public function belongsTo()
+    public function fields(Request $request)
     { 
-        return BelongsTo::make(__("City"), "location", City::class)  
-            ->rules('required');
+        return [
+            ID::make(__("ID"), 'id')->sortable(), 
+
+            BelongsTo::make(__('City'), 'city', City::class) 
+                ->showCreateRelationButton() 
+                ->withoutTrashed()
+                ->required()
+                ->rules('required'),
+
+            new Targomaan([
+                Text::make(__("Name"), 'name') 
+                    ->rules('required')
+                    ->sortable()
+                    ->required(), 
+            ]),  
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+
+            MapMarker::make(__('Google Location'), 'location')
+                ->defaultZoom(16)
+                ->defaultLatitude(41.823611)
+                ->defaultLongitude(-71.422222)
+                ->centerCircle(10, 'red', 1, .5),
+        ]; 
     }
 }
