@@ -27,13 +27,13 @@ class Country extends Resource
             ID::make(__("ID"), 'id')->sortable(), 
 
             new Targomaan([
-                Text::make(__("Name"), 'name') 
+                Text::make(__('Country Name'), 'name') 
                     ->rules('required')
                     ->sortable()
                     ->required(), 
             ]), 
 
-            Text::make("ISO")->sortable(),
+            Text::make('ISO Code')->sortable(),
 
             Boolean::make(__('Active'), 'active')->sortable(),
         ]; 

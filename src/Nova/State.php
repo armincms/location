@@ -33,7 +33,7 @@ class State extends Resource
                 ->rules('required'),
 
             new Targomaan([
-                Text::make(__('Name'), 'name') 
+                Text::make(__('State Name'), 'name') 
                     ->rules('required')
                     ->sortable()
                     ->required(), 

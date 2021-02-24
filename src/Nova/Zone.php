@@ -34,7 +34,7 @@ class Zone extends Country
                 ->rules('required'),
 
             new Targomaan([
-                Text::make(__("Name"), 'name') 
+                Text::make(__('Zone Name'), 'name') 
                     ->rules('required')
                     ->sortable()
                     ->required(), 
