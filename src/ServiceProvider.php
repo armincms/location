@@ -59,28 +59,28 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
     {
         // Country blueprint
         Blueprint::macro('country', function($name = 'country_id') {
-            $this->createForeignColumnCallback($name, 'location_countries');
+            return $this->createForeignColumnCallback($name, 'location_countries');
         });
         Blueprint::macro('dropCountry', function($name = 'country_id') {
             $this->dropForeignColumnCallback($name); 
         });
         // State blueprint
         Blueprint::macro('state', function($name = 'state_id') {
-            $this->createForeignColumnCallback($name, 'location_states');
+            return $this->createForeignColumnCallback($name, 'location_states');
         });
         Blueprint::macro('dropState', function($name = 'state_id') {
             $this->dropForeignColumnCallback($name); 
         });
         // City blueprint
         Blueprint::macro('city', function($name = 'city_id') {
-            $this->createForeignColumnCallback($name, 'location_citites');
+            return $this->createForeignColumnCallback($name, 'location_citites');
         });
         Blueprint::macro('dropCity', function($name = 'city_id') {
             $this->dropForeignColumnCallback($name); 
         });
         // Zone blueprint
         Blueprint::macro('zone', function($name = 'zone_id') {
-            $this->createForeignColumnCallback($name, 'location_zones');
+            return $this->createForeignColumnCallback($name, 'location_zones');
         });
         Blueprint::macro('dropZone', function($name = 'zone_id') {
             $this->dropForeignColumnCallback($name); 
@@ -100,9 +100,7 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
             $bluprint->index();
 
             $this
-                ->foreign($column)->references('id')->on($table)
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->foreign($column)->references('id')->on($table);
         }); 
     }
 
