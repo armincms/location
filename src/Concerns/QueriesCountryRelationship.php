@@ -12,7 +12,7 @@ trait QueriesCountryRelationship
 	 */
 	public function country()
 	{
-		return $this->belongsTo(Armincms\Location\Models\LocationCountry::class);
+		return $this->belongsTo(\Armincms\Location\Models\LocationCountry::class);
 	} 
 
 	/**

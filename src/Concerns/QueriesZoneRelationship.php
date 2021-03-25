@@ -12,7 +12,7 @@ trait QueriesZoneRelationship
 	 */
 	public function zone()
 	{
-		return $this->belongsTo(Armincms\Location\Models\LocationZone::class);
+		return $this->belongsTo(\Armincms\Location\Models\LocationZone::class);
 	} 
 
 	/**

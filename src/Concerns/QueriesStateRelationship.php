@@ -12,7 +12,7 @@ trait QueriesStateRelationship
 	 */
 	public function state()
 	{
-		return $this->belongsTo(Armincms\Location\Models\LocationState::class);
+		return $this->belongsTo(\Armincms\Location\Models\LocationState::class);
 	} 
 
 	/**
