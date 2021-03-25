@@ -33,7 +33,7 @@ class Country extends Resource
                     ->required(), 
             ]), 
 
-            Text::make('ISO Code')->sortable(),
+            Text::make(__('ISO Code'), 'iso')->sortable(),
 
             Boolean::make(__('Active'), 'active')->sortable(),
         ]; 
