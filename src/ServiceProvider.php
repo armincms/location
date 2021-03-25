@@ -85,38 +85,23 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
         Blueprint::macro('dropZone', function($name = 'zone_id') {
             $this->dropForeignColumnCallback($name); 
         });
-    }
+        // Returns callback for bluprint column denifion.
+        Blueprint::macro('createForeignColumnCallback', function(string $column, string $table) {
+            return tap($this->unsignedBigInteger($column), function($bluprint) use ($column, $table) { 
+                $bluprint->index();
 
-    /**
-     * Returns callback for bluprint column denifion.
-     * 
-     * @param  string $column  
-     * @param  string $table 
-     * @return callable        
-     */
-    public function createForeignColumnCallback(string $column, string $table)
-    {
-        return tap($this->unsignedBigInteger($column), function($bluprint) use ($column, $table) { 
-            $bluprint->index();
-
-            $this
-                ->foreign($column)->references('id')->on($table);
+                $this
+                    ->foreign($column)->references('id')->on($table);
+            }); 
         }); 
-    }
-
-    /**
-     * Returns callback for bluprint column drop.
-     * 
-     * @param  string $column   
-     * @return callable        
-     */
-    public function dropForeignColumnCallback(string $column)
-    {
-        return function($column) {
-            $this->dropForeign($this->createIndexName('foreign', $column));
-            $this->dropColumn($column); 
-        };
-    }
+        // Returns callback for bluprint column drop.
+        Blueprint::macro('dropForeignColumnCallback', function(string $column) { 
+            return function($column) {
+                $this->dropForeign($this->createIndexName('foreign', $column));
+                $this->dropColumn($column); 
+            }; 
+        }); 
+    } 
 
     /**
      * Get the services provided by the provider.
