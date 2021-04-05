@@ -2,31 +2,48 @@
 
 namespace Armincms\Location\Nova\Actions; 
 
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection; 
+use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Actions\Action;
+use Armincms\Location\Models\LocationState;
+use Armincms\Location\Helper;
 
-class ImportStates extends Import
-{    
-    public function resource(): string
+class ImportStates extends Action
+{     
+    /**
+     * Perform the action on the given models.
+     *
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  \Illuminate\Support\Collection  $models
+     * @return mixed
+     */
+    public function handle(ActionFields $fields, Collection $models)
+    {  
+        $country = $models->first();   
+        $states = $this->getStates($country)->map(function($state) use ($country) {
+            return [
+                'country_id' => $country->id,
+                'active' => 0,
+                'name' => json_encode([
+                    app()->getLocale() => $state['name']
+                ]),
+            ];
+        });
+
+        LocationState::insert($states->values()->all());
+    } 
+
+    public function getStates($country)
     {
-        return "Armincms\\Location\\Nova\\State";
+        return $this->filterDuplicates(Helper::getCountryStatesByIsoCode($country->iso));
     }
 
-    public function filterInsertions(Collection $insertions, Model $model) : Collection
+    public function filterDuplicates($states)
     {
-    	return $insertions->map(function($insertion) {  
-    		$insertion['config'] = json_encode([
-    			"location_id" => $insertion['location_id']
-    		]);
+        $availableStates = LocationState::get()->map->name;
 
-    		unset($insertion['citites']); 
-
-    		return $insertion;
-    	});
-    }
-
-    public function loadCountry(Model $model) : Model
-    {
-    	return $model;
+        return $states->filter(function($state) use ($availableStates) {
+            return ! $availableStates->contains($state['name']); 
+        });
     }
 }

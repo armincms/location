@@ -14,4 +14,14 @@ class LocationState extends Model
 	{
 		return $this->belongsTo(LocationCountry::class);
 	}
+
+	/**
+	 * Query the related LocationCountry.
+	 * 
+	 * @return \Illuminate\Database\Eloqeunt\Relations\HasOneOrMany
+	 */
+	public function cities()
+	{
+		return $this->hasMany(LocationCity::class, 'state_id');
+	}
 }

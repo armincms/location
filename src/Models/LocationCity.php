@@ -14,4 +14,14 @@ class LocationCity extends Model
 	{
 		return $this->belongsTo(LocationState::class);
 	}
+
+	/**
+	 * Query the related LocationZone.
+	 * 
+	 * @return \Illuminate\Database\Eloqeunt\Relations\HasOneOrMany
+	 */
+	public function zones()
+	{
+		return $this->hasMany(LocationZone::class, 'city_id');
+	}
 }

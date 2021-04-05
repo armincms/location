@@ -3,7 +3,7 @@
 namespace Armincms\Location\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Boolean};
+use Laravel\Nova\Fields\{ID, Text, Boolean, HasMany};
 use Armincms\Fields\Targomaan;
 
 class Country extends Resource
@@ -36,6 +36,8 @@ class Country extends Resource
             Text::make(__('ISO Code'), 'iso')->sortable(),
 
             Boolean::make(__('Active'), 'active')->sortable(),
+
+            HasMany::make(__('States'), 'states', State::class),
         ]; 
     } 
 
@@ -47,7 +49,10 @@ class Country extends Resource
      */
     public function actions(Request $request)
     {
-        return [ 
+        return [  
+            (new Actions\ImportStates)->canSee(function() {
+                return \Auth::guard('admin')->check();
+            })->onlyOnTableRow(),
         ];
     }
 }

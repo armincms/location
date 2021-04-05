@@ -3,9 +3,10 @@
 namespace Armincms\Location\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{Field, BelongsTo};     
+use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo, HasMany};
+use Armincms\Fields\Targomaan;
 
-class City extends State
+class City extends Resource
 {     
     /**
      * The model the resource corresponds to.
@@ -22,16 +23,25 @@ class City extends State
      */
     public function fields(Request $request)
     {
-        return array_map(function($field) {
-            if(! is_subclass_of($field, Field::class) || $field->attribute !== 'country') {
-                return $field;
-            }
+        return [ 
+            ID::make(__('ID'), 'id')->sortable(), 
 
-            return BelongsTo::make(__('State'), 'state', State::class) 
-                        ->showCreateRelationButton() 
-                        ->withoutTrashed()
-                        ->required()
-                        ->rules('required');
-        }, parent::fields($request));
+            BelongsTo::make(__('State'), 'state', State::class) 
+                ->showCreateRelationButton() 
+                ->withoutTrashed()
+                ->required()
+                ->rules('required'),
+
+            new Targomaan([
+                Text::make(__('State Name'), 'name') 
+                    ->rules('required')
+                    ->sortable()
+                    ->required(), 
+            ]),  
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+
+            HasMany::make(__('Zones'), 'zones', Zone::class),
+        ]; 
     }
 }

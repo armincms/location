@@ -3,7 +3,7 @@
 namespace Armincms\Location\Nova; 
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo};
+use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo, HasMany};
 use Armincms\Fields\Targomaan;
 
 class State extends Resource
@@ -40,6 +40,8 @@ class State extends Resource
             ]),  
 
             Boolean::make(__('Active'), 'active')->sortable(),
+
+            HasMany::make(__('Cities'), 'cities', City::class),
         ]; 
     } 
 
