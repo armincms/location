@@ -52,4 +52,19 @@ abstract class Resource extends ArminResource
      * @var string
      */
     public static $group = 'Locations';    
+
+    /**
+     * Get the actions available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function actions(Request $request)
+    {
+        return [
+            new Actions\Activate,
+
+            new Actions\Inactivate,
+        ];
+    }
 }

@@ -49,10 +49,10 @@ class Country extends Resource
      */
     public function actions(Request $request)
     {
-        return [  
+        return array_merge(parent::actions($request), [  
             (new Actions\ImportStates)->canSee(function() {
                 return \Auth::guard('admin')->check();
             })->onlyOnTableRow(),
-        ];
+        ]);
     }
 }

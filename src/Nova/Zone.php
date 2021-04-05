@@ -7,7 +7,7 @@ use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo};
 use GeneaLabs\NovaMapMarkerField\MapMarker;
 use Armincms\Fields\Targomaan;
 
-class Zone extends Country
+class Zone extends Resource
 {     
     /**
      * The model the resource corresponds to.

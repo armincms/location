@@ -52,11 +52,11 @@ class State extends Resource
      * @return array
      */
     public function actions(Request $request)
-    {
-        return [ 
+    { 
+        return array_merge(parent::actions($request), [ 
             (new Actions\ImportCities)->canSee(function() {
                 return \Auth::guard('admin')->check();
             })->onlyOnTableRow(),
-        ];
+        ]);
     }
 }

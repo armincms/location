@@ -45,4 +45,52 @@ abstract class Model extends LaravelModel implements Translatable
     {
         return $query->whereActive(true);
     }
+
+    /**
+     * Determine if active column is true.
+     * 
+     * @return boolean 
+     */
+    public function isActive() : bool
+    {
+        return boolval($this->active);
+    }
+
+    /**
+     * Determine if active column is false.
+     * 
+     * @return boolean 
+     */
+    public function isNotActive() : bool
+    {
+        return ! $this->isActive();
+    }
+
+    /**
+     * Set the active column as true if not.
+     * 
+     * @return $this
+     */
+    public function activate()
+    {
+        if ($this->isNotActive()) {
+            $this->forceFill(['active' => 1])->save();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the active column as false if not.
+     * 
+     * @return $this
+     */
+    public function inactivate()
+    {
+        if ($this->isActive()) {
+            $this->forceFill(['active' => 0])->save();
+        }
+
+        return $this;
+    }
 }
