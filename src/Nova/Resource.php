@@ -2,25 +2,13 @@
 
 namespace Armincms\Location\Nova;
  
+use Armincms\Contract\Nova\Fields;   
 use Laravel\Nova\Http\Requests\NovaRequest; 
 use Laravel\Nova\Resource as NovaResource;
-use Illuminate\Http\Request;  
+use Illuminate\Http\Request;    
 
-use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Select; 
-use Armincms\Fields\Targomaan; 
-use Armincms\Fields\InteractsWithJsonTranslator; 
-use Armincms\Nova\Resource as ArminResource;   
-
-
-abstract class Resource extends ArminResource
-{ 
-    use InteractsWithJsonTranslator;
-
+abstract class Resource extends NovaResource
+{  
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -51,7 +39,7 @@ abstract class Resource extends ArminResource
      *
      * @var string
      */
-    public static $group = 'Locations';    
+    public static $group = 'Locations';   
 
     /**
      * Get the actions available on the entity.
@@ -66,5 +54,29 @@ abstract class Resource extends ArminResource
 
             new Actions\Inactivate,
         ];
+    }
+
+    /**
+     * Return the location to redirect the user after creation.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
+     * @return string
+     */
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return '/resources/'.static::uriKey();
+    }
+
+    /**
+     * Return the location to redirect the user after update.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
+     * @return string
+     */
+    public static function redirectAfterUpdate(NovaRequest $request, $resource)
+    {
+        return '/resources/'.static::uriKey();
     }
 }

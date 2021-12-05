@@ -14,8 +14,8 @@ class CreateLocationCountriesTable extends Migration
     public function up()
     { 
         Schema::create('location_countries', function (Blueprint $table) {
-            $table->bigIncrements('id');  
-            $table->json('name')->nullable(); 
+            $table->id();  
+            $table->json('name'); 
             $table->string('iso')->nullable(); 
             $table->boolean('active')->default(false);   
             $table->softDeletes();   

@@ -2,9 +2,13 @@
 
 namespace Armincms\Location\Nova; 
 
+use Armincms\Fields\Targomaan; 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo, HasMany};
-use Armincms\Fields\Targomaan;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
 
 class State extends Resource
 {   
@@ -35,7 +39,6 @@ class State extends Resource
             new Targomaan([
                 Text::make(__('State Name'), 'name') 
                     ->rules('required')
-                    ->sortable()
                     ->required(), 
             ]),  
 
@@ -43,6 +46,25 @@ class State extends Resource
 
             HasMany::make(__('Cities'), 'cities', City::class),
         ]; 
+    } 
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fieldsForIndex(Request $request)
+    {
+        return [
+            ID::make(__('ID'), 'id')->sortable(),
+ 
+            Text::make(__('State Name'), 'name')->sortable(),   
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+
+            BelongsTo::make(__('Country'), 'country', Country::class)->sortable(),
+        ];
     } 
 
     /**
@@ -54,9 +76,7 @@ class State extends Resource
     public function actions(Request $request)
     { 
         return array_merge(parent::actions($request), [ 
-            (new Actions\ImportCities)->canSee(function() {
-                return \Auth::guard('admin')->check();
-            })->onlyOnTableRow(),
+            Actions\ImportCities::make()->onlyOnTableRow(),
         ]);
     }
 }

@@ -6,10 +6,8 @@
         "nova"
     ],
     "license": "MIT",
-    "require": {
-        "php": ">=7.1.0", 
-        "armincms/nova-targomaan": "~0.1",
-        "gobrightspot/nova-detached-actions": "~1.0",
+    "require": {  
+        "armincms/nova-targomaan": "~1.0", 
         "genealabs/nova-map-marker-field": "~0.1"
     },
     "autoload": {
@@ -28,5 +26,6 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "2.0.0"
 }

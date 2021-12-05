@@ -2,9 +2,12 @@
 
 namespace Armincms\Location\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Boolean, HasMany};
 use Armincms\Fields\Targomaan;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
 
 class Country extends Resource
 {    
@@ -23,22 +26,36 @@ class Country extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make(__("ID"), 'id')->sortable(), 
-
+        return [ 
             new Targomaan([
                 Text::make(__('Country Name'), 'name') 
-                    ->rules('required')
-                    ->sortable()
+                    ->rules('required') 
                     ->required(), 
             ]), 
 
-            Text::make(__('ISO Code'), 'iso')->sortable(),
+            Text::make(__('ISO Code'), 'iso')->required(),
 
-            Boolean::make(__('Active'), 'active')->sortable(),
+            Boolean::make(__('Active'), 'active'),
 
             HasMany::make(__('States'), 'states', State::class),
         ]; 
+    } 
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fieldsForIndex(Request $request)
+    {
+        return [
+            ID::make(__('ID'), 'id')->sortable(),
+ 
+            Text::make(__('Country Name'), 'name')->sortable(),   
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+        ];
     } 
 
     /**
@@ -50,9 +67,7 @@ class Country extends Resource
     public function actions(Request $request)
     {
         return array_merge(parent::actions($request), [  
-            (new Actions\ImportStates)->canSee(function() {
-                return \Auth::guard('admin')->check();
-            })->onlyOnTableRow(),
+            Actions\ImportStates::make()->onlyOnTableRow(),
         ]);
     }
 }

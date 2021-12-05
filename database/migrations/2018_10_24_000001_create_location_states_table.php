@@ -14,17 +14,11 @@ class CreateLocationStatesTable extends Migration
     public function up()
     { 
         Schema::create('location_states', function (Blueprint $table) {
-            $table->bigIncrements('id');   
-            $table->json('name')->nullable();  
+            $table->id();   
+            $table->json('name');  
             $table->boolean('active')->default(false);  
-            $table->unsignedBigInteger('country_id');  
-            $table->softDeletes();  
-
-            $table
-                ->foreign('country_id')
-                ->references('id')->on('location_countries')
-                ->onDelete('cascade') 
-                ->onUpdate('cascade'); 
+            $table->foreignId('country_id')->constrained('location_countries');  
+            $table->softDeletes();   
         });   
     } 
 

@@ -29,7 +29,7 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        $this->servingNova(); 
+        $this->resources(); 
         $this->registerPolicies();
         $this->registerBlueprintMacros();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
@@ -40,7 +40,7 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
      *  
      * @return void
      */
-    public function servingNova()
+    public function resources()
     {
         LaravelNova::resources([
             Nova\Country::class,
@@ -86,16 +86,13 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
             $this->dropForeignColumnCallback($name); 
         });
         // Returns callback for bluprint column denifion.
-        Blueprint::macro('createForeignColumnCallback', function(string $column, string $table) {
-            return tap($this->unsignedBigInteger($column), function($bluprint) use ($column, $table) { 
-                $bluprint->index();
-
-                $this
-                    ->foreign($column)->references('id')->on($table);
-            }); 
+        Blueprint::macro('createForeignColumnCallback', function($column, $table) {
+            return tap($this->foreignId($column), function($column) use ($table) {
+                $column->index()->constrained($table);
+            });
         }); 
         // Returns callback for bluprint column drop.
-        Blueprint::macro('dropForeignColumnCallback', function(string $column) { 
+        Blueprint::macro('dropForeignColumnCallback', function($column) { 
             return function($column) {
                 $this->dropForeign($this->createIndexName('foreign', $column));
                 $this->dropColumn($column); 

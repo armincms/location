@@ -14,19 +14,13 @@ class CreateLocationZonesTable extends Migration
     public function up()
     { 
         Schema::create('location_zones', function (Blueprint $table) {
-            $table->bigIncrements('id');   
-            $table->json('name')->nullable();  
+            $table->id();   
+            $table->json('name');  
             $table->boolean('active')->default(false);  
-            $table->unsignedBigInteger('city_id');  
-            $table->decimal('latitude', 9, 6)->nullable();
-            $table->decimal('longitude', 9, 6)->nullable(); 
-            $table->softDeletes();  
-
-            $table
-                ->foreign('city_id')
-                ->references('id')->on('location_cities')
-                ->onDelete('cascade') 
-                ->onUpdate('cascade'); 
+            $table->foreignId('city_id')->constrained('location_cities');  
+            $table->string('latitude', 20)->nullable();
+            $table->string('longitude', 20)->nullable(); 
+            $table->softDeletes();   
         });   
     } 
 

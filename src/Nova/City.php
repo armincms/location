@@ -2,9 +2,13 @@
 
 namespace Armincms\Location\Nova;
 
+use Armincms\Fields\Targomaan; 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo, HasMany};
-use Armincms\Fields\Targomaan;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
 
 class City extends Resource
 {     
@@ -43,5 +47,24 @@ class City extends Resource
 
             HasMany::make(__('Zones'), 'zones', Zone::class),
         ]; 
+    }
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fieldsForIndex(Request $request)
+    {
+        return [
+            ID::make(__('ID'), 'id')->sortable(),
+ 
+            Text::make(__('City Name'), 'name')->sortable(),   
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+
+            BelongsTo::make(__('State'), 'state', State::class)->sortable(),
+        ];
     }
 }

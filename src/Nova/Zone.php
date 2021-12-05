@@ -2,10 +2,14 @@
 
 namespace Armincms\Location\Nova;
 
-use Illuminate\Http\Request; 
-use Laravel\Nova\Fields\{ID, Text, Boolean, BelongsTo};
-use GeneaLabs\NovaMapMarkerField\MapMarker;
-use Armincms\Fields\Targomaan;
+use Armincms\Fields\Targomaan; 
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
+use GeneaLabs\NovaMapMarkerField\MapMarker; 
 
 class Zone extends Resource
 {     
@@ -35,8 +39,7 @@ class Zone extends Resource
 
             new Targomaan([
                 Text::make(__('Zone Name'), 'name') 
-                    ->rules('required')
-                    ->sortable()
+                    ->rules('required') 
                     ->required(), 
             ]),  
 
@@ -48,5 +51,24 @@ class Zone extends Resource
                 ->defaultLongitude(-71.422222)
                 ->centerCircle(10, 'red', 1, .5),
         ]; 
+    }
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fieldsForIndex(Request $request)
+    {
+        return [
+            ID::make(__('ID'), 'id')->sortable(),
+ 
+            Text::make(__('Zone Name'), 'name')->sortable(),   
+
+            Boolean::make(__('Active'), 'active')->sortable(),
+
+            BelongsTo::make(__('City'), 'city', City::class)->sortable(),
+        ];
     }
 }
