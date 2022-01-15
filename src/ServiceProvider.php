@@ -16,10 +16,10 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
      * @var array
      */
     protected $policies = [ 
-        Country::class =>  Policies\Country::class, 
-        State::class =>  Policies\State::class, 
-        City::class =>  Policies\City::class, 
-        Zone::class =>  Policies\Zone::class, 
+        Models\LocationCountry::class =>  Policies\Country::class, 
+        Models\LocationState::class =>  Policies\State::class, 
+        Models\LocationCity::class =>  Policies\City::class, 
+        Models\LocationZone::class =>  Policies\Zone::class, 
     ]; 
 
     /**
@@ -73,7 +73,7 @@ class ServiceProvider extends AuthServiceProvider implements DeferrableProvider
         });
         // City blueprint
         Blueprint::macro('city', function($name = 'city_id') {
-            return $this->createForeignColumnCallback($name, 'location_citites');
+            return $this->createForeignColumnCallback($name, 'location_cities');
         });
         Blueprint::macro('dropCity', function($name = 'city_id') {
             $this->dropForeignColumnCallback($name); 
